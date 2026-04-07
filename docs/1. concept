@@ -1,0 +1,60 @@
+PaGURUS (寄居蟹) 这个名字不仅极具辨识度，而且完美隐喻了系统“找壳（找项目） -> 钻壳（跑通环境） -> 改造壳（增量开发）”的核心机制。
+
+由于系统目前无法直接为您生成可导出的文档文件，我直接在对话中为您梳理一份最轻量、最容易落地的 MVP（最小可行性产品）项目大纲，您可以直接复制保存。
+
+PaGURUS (寄居蟹) 项目大纲
+定位: 基于执行反馈与模板检索的仓库级代码 Agent (Execution-Guided Repository-Level Code Agent)
+核心理念: Clone -> Build -> Tweak (拒绝 Zero-shot，站在开源库的肩膀上写代码)
+
+一、 系统架构 (Core Modules)
+PaGURUS 包含四个核心模块，模拟寄居蟹的生存过程：
+
+1. 意图解析与“寻壳”模块 (Retriever)
+功能: 接收用户的自然语言需求，将其拆解为技术栈标签，并在模板库中检索最匹配的“骨架项目”。
+输入: "帮我写一个带登录功能的 React 个人博客，后端用 FastAPI"
+实现:
+初期：维护一个高质量的本地模板 JSON 库（精选 50 个主流框架的 Boilerplate）。
+后期：接入 GitHub API 或搭建基于 Qdrant 的向量检索，实现全网动态“寻壳”。
+2. 沙盒“试壳”模块 (Sandbox & Execution Builder)
+功能: 将检索到的项目 Clone 下来，在隔离环境中安装依赖并尝试运行，确保基座项目可用。
+难点: 解决环境冲突（npm 报错、依赖缺失等）。
+实现:
+调用 Docker API 或使用 E2B (开源的云端 AI 代码沙盒)。
+内置一个专门负责 Debug 的 Sub-Agent，专门读取报错 Log 并自动执行 npm install 等修复命令，直到项目成功启动。
+3. 代码“改造”模块 (AST-based Code Modifier)
+功能: 在跑通的基座项目上，理解全局项目结构，定位需要修改的文件，并进行增量开发。
+实现:
+利用 Tree-sitter 解析整个 Repo，生成“仓库全局依赖图 (Repo Map)”。
+利用大模型（如 Claude 3.5 Sonnet 或 DeepSeek Coder）生成针对特定文件的 Patch（补丁）。
+参考 Aider 的思路，让模型输出统一的 Diff 格式，精准替换代码。
+4. 验证与输出模块 (Validator)
+功能: 增量修改后，再次在沙盒中编译运行。如果报错，将 Error Log 喂回给改造模块进行自修复；如果成功，打包输出给用户。
+二、 核心工作流 (Workflow Pipeline)
+User Request: 用户输入需求 Prompt。
+Search & Clone: Retriever 找到并拉取目标 Repo (e.g., awesome-react-fastapi-template)。
+Init & Test: Sandbox 启动 Docker，执行 setup.sh。
+If Failed: Executor Agent 循环阅读报错并修复依赖，直到跑通。
+Plan & Navigate: Modifier 结合需求和 Repo Map，制定修改计划（“我需要修改 App.jsx，添加 BlogList 组件...”）。
+Code & Patch: 大模型输出代码 Diff，应用到本地文件。
+Verify: 沙盒重新编译。
+If Failed: 收集报错，跳回步骤 5 修复代码。
+If Passed: 将修改好的完整项目（或 Git Commit）交付给用户。
+三、 研发演进路线 (Roadmap)
+作为算法研究员，建议您采用“敏捷迭代”的方式，先打通闭环，再提升智能化水平：
+
+V0.1 概念验证阶段 (PoC - 1周)
+
+放弃动态检索，写死 1-2 个你最熟悉的模板项目（比如一个纯 Python 脚本框架）。
+写一段 Python 脚本，用 subprocess 调用命令行，跑通环境。
+将项目的源码和需求拼接给大模型，让它输出修改后的代码并覆盖原文件。
+目标：证明“模板+修改”比“从零生成”质量高。
+V0.5 闭环实现阶段 (MVP - 1个月)
+
+引入 E2B 沙盒或 Docker，解决环境隔离。
+接入简单的 RAG，支持从 10 个预设模板中自动选择。
+实现基于 AST 的代码理解（Repo Map），让模型不要每次都阅读完整代码，而是只看关键上下文。
+V1.0 智能体强化阶段 (Research Focus)
+
+重点攻克：环境依赖报错的自主修复率。
+重点攻克：长上下文多文件增量修改的对齐问题。
+目标：可以拿去打榜 SWE-bench 或发表相关论文。
