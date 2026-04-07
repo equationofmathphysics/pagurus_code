@@ -1,0 +1,732 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦀 ShellFinder Report - 2026-04-07 10:47</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 40px;
+            background: #f8f9fa;
+        }
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .stat-card:hover { transform: translateY(-5px); }
+        .stat-value { font-size: 2.5em; font-weight: bold; color: #667eea; }
+        .stat-label { color: #6c757d; margin-top: 5px; }
+        .section {
+            padding: 40px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .section h2 {
+            color: #495057;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+        .repo-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .repo-table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        .repo-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .repo-table tr:hover { background: #f8f9fa; }
+        .repo-name { font-weight: 600; color: #667eea; }
+        .language-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+        .stars { color: #ffc107; }
+        .chart-container {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        .bar {
+            height: 30px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 15px;
+            margin: 10px 0;
+            position: relative;
+            transition: width 0.5s ease;
+        }
+        .bar-label {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-weight: 600;
+        }
+        .bar-value {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-weight: 600;
+        }
+        .quality-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .quality-item {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .quality-label { color: #6c757d; font-size: 0.9em; }
+        .quality-value { font-size: 1.8em; font-weight: bold; color: #495057; }
+        .footer {
+            background: #343a40;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .recommendation {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🦀 ShellFinder 数据报告</h1>
+            <p>PaGURUS 模板仓库爬取与分析报告</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">
+                生成时间: 2026-04-07 10:47:41
+            </p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">100</div>
+                <div class="stat-label">📦 总仓库数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">14193</div>
+                <div class="stat-label">⭐ 平均 Stars</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">100.0%</div>
+                <div class="stat-label">✨ 质量达标率</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">15</div>
+                <div class="stat-label">💻 覆盖语言</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📊 质量指标</h2>
+            <div class="quality-metrics">
+                <div class="quality-item">
+                    <div class="quality-label">平均描述长度</div>
+                    <div class="quality-value">74.39 字符</div>
+                </div>
+                <div class="quality-item">
+                    <div class="quality-label">README 覆盖率</div>
+                    <div class="quality-value">100.0%</div>
+                </div>
+                <div class="quality-item">
+                    <div class="quality-label">活跃仓库 (30天)</div>
+                    <div class="quality-value">94.0%</div>
+                </div>
+                <div class="quality-item">
+                    <div class="quality-label">Topics 标注率</div>
+                    <div class="quality-value">88.0%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>💻 编程语言分布</h2>
+            <div class="chart-container">
+
+                <div class="bar" style="width: 100.0%">
+                    <span class="bar-label">None</span>
+                    <span class="bar-value">73</span>
+                </div>
+
+                <div class="bar" style="width: 6.8493150684931505%">
+                    <span class="bar-label">HTML</span>
+                    <span class="bar-value">5</span>
+                </div>
+
+                <div class="bar" style="width: 4.10958904109589%">
+                    <span class="bar-label">JavaScript</span>
+                    <span class="bar-value">3</span>
+                </div>
+
+                <div class="bar" style="width: 4.10958904109589%">
+                    <span class="bar-label">Python</span>
+                    <span class="bar-value">3</span>
+                </div>
+
+                <div class="bar" style="width: 4.10958904109589%">
+                    <span class="bar-label">Ruby</span>
+                    <span class="bar-value">3</span>
+                </div>
+
+                <div class="bar" style="width: 4.10958904109589%">
+                    <span class="bar-label">Swift</span>
+                    <span class="bar-value">3</span>
+                </div>
+
+                <div class="bar" style="width: 2.73972602739726%">
+                    <span class="bar-label">Shell</span>
+                    <span class="bar-value">2</span>
+                </div>
+
+                <div class="bar" style="width: 1.36986301369863%">
+                    <span class="bar-label">C#</span>
+                    <span class="bar-value">1</span>
+                </div>
+
+                <div class="bar" style="width: 1.36986301369863%">
+                    <span class="bar-label">Clojure</span>
+                    <span class="bar-value">1</span>
+                </div>
+
+                <div class="bar" style="width: 1.36986301369863%">
+                    <span class="bar-label">Dart</span>
+                    <span class="bar-value">1</span>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🏆 Top 50 仓库</h2>
+            <table class="repo-table">
+                <thead>
+                    <tr>
+                        <th>排名</th>
+                        <th>仓库名称</th>
+                        <th>语言</th>
+                        <th>⭐ Stars</th>
+                        <th>🍴 Forks</th>
+                        <th>描述</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>#1</td>
+                        <td><a href="https://github.com/vinta/awesome-python" target="_blank" class="repo-name">vinta/awesome-python</a></td>
+                        <td><span class="language-tag" style="background: #cabc1d; color: white;">Python</span></td>
+                        <td class="stars">⭐ 291,048</td>
+                        <td>🍴 27,592</td>
+                        <td style="max-width: 400px;">An opinionated list of Python frameworks, libraries, tools, and resources</td>
+                    </tr>
+
+                    <tr>
+                        <td>#2</td>
+                        <td><a href="https://github.com/avelino/awesome-go" target="_blank" class="repo-name">avelino/awesome-go</a></td>
+                        <td><span class="language-tag" style="background: #f98c89; color: white;">Go</span></td>
+                        <td class="stars">⭐ 169,266</td>
+                        <td>🍴 13,113</td>
+                        <td style="max-width: 400px;">A curated list of awesome Go frameworks, libraries and software</td>
+                    </tr>
+
+                    <tr>
+                        <td>#3</td>
+                        <td><a href="https://github.com/Chalarangelo/30-seconds-of-code" target="_blank" class="repo-name">Chalarangelo/30-seconds-of-code</a></td>
+                        <td><span class="language-tag" style="background: #bd5e04; color: white;">JavaScript</span></td>
+                        <td class="stars">⭐ 127,342</td>
+                        <td>🍴 12,465</td>
+                        <td style="max-width: 400px;">Coding articles to level up your development skills</td>
+                    </tr>
+
+                    <tr>
+                        <td>#4</td>
+                        <td><a href="https://github.com/jaywcjlove/awesome-mac" target="_blank" class="repo-name">jaywcjlove/awesome-mac</a></td>
+                        <td><span class="language-tag" style="background: #34468c; color: white;">Swift</span></td>
+                        <td class="stars">⭐ 101,597</td>
+                        <td>🍴 7,572</td>
+                        <td style="max-width: 400px;"> This project is dedicated to collecting high-quality macOS software and organizing them systematically by different categories for easy search and use.</td>
+                    </tr>
+
+                    <tr>
+                        <td>#5</td>
+                        <td><a href="https://github.com/sindresorhus/awesome-nodejs" target="_blank" class="repo-name">sindresorhus/awesome-nodejs</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 65,514</td>
+                        <td>🍴 6,211</td>
+                        <td style="max-width: 400px;">:zap: Delightful Node.js packages and resources [BECAUSE OF TOO MUCH SPAM AND LOW-QUALITY SUBMISSIONS, SUBMISSIONS ARE PAUSED UNTIL SEPTEMBER]</td>
+                    </tr>
+
+                    <tr>
+                        <td>#6</td>
+                        <td><a href="https://github.com/Solido/awesome-flutter" target="_blank" class="repo-name">Solido/awesome-flutter</a></td>
+                        <td><span class="language-tag" style="background: #5c365a; color: white;">Dart</span></td>
+                        <td class="stars">⭐ 59,545</td>
+                        <td>🍴 6,866</td>
+                        <td style="max-width: 400px;">An awesome list that curates the best Flutter libraries, tools, tutorials, articles and more.</td>
+                    </tr>
+
+                    <tr>
+                        <td>#7</td>
+                        <td><a href="https://github.com/rust-unofficial/awesome-rust" target="_blank" class="repo-name">rust-unofficial/awesome-rust</a></td>
+                        <td><span class="language-tag" style="background: #8e62eb; color: white;">Rust</span></td>
+                        <td class="stars">⭐ 56,598</td>
+                        <td>🍴 3,276</td>
+                        <td style="max-width: 400px;">A curated list of Rust code and resources.</td>
+                    </tr>
+
+                    <tr>
+                        <td>#8</td>
+                        <td><a href="https://github.com/vsouza/awesome-ios" target="_blank" class="repo-name">vsouza/awesome-ios</a></td>
+                        <td><span class="language-tag" style="background: #34468c; color: white;">Swift</span></td>
+                        <td class="stars">⭐ 51,730</td>
+                        <td>🍴 6,960</td>
+                        <td style="max-width: 400px;">A curated list of awesome iOS ecosystem, including Objective-C and Swift Projects </td>
+                    </tr>
+
+                    <tr>
+                        <td>#9</td>
+                        <td><a href="https://github.com/serhii-londar/open-source-mac-os-apps" target="_blank" class="repo-name">serhii-londar/open-source-mac-os-apps</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 48,153</td>
+                        <td>🍴 2,508</td>
+                        <td style="max-width: 400px;">🚀 Awesome list of open source applications for macOS. https://t.me/s/opensourcemacosapps</td>
+                    </tr>
+
+                    <tr>
+                        <td>#10</td>
+                        <td><a href="https://github.com/dypsilon/frontend-dev-bookmarks" target="_blank" class="repo-name">dypsilon/frontend-dev-bookmarks</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 46,388</td>
+                        <td>🍴 5,150</td>
+                        <td style="max-width: 400px;">Manually curated collection of resources for frontend web developers.</td>
+                    </tr>
+
+                    <tr>
+                        <td>#11</td>
+                        <td><a href="https://github.com/jondot/awesome-react-native" target="_blank" class="repo-name">jondot/awesome-react-native</a></td>
+                        <td><span class="language-tag" style="background: #bd5e04; color: white;">JavaScript</span></td>
+                        <td class="stars">⭐ 35,636</td>
+                        <td>🍴 4,024</td>
+                        <td style="max-width: 400px;">Awesome React Native components, news, tools, and learning material!</td>
+                    </tr>
+
+                    <tr>
+                        <td>#12</td>
+                        <td><a href="https://github.com/sorrycc/awesome-javascript" target="_blank" class="repo-name">sorrycc/awesome-javascript</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 34,933</td>
+                        <td>🍴 4,525</td>
+                        <td style="max-width: 400px;">🐢 A collection of awesome browser-side  JavaScript libraries, resources and shiny things.</td>
+                    </tr>
+
+                    <tr>
+                        <td>#13</td>
+                        <td><a href="https://github.com/sindresorhus/awesome-electron" target="_blank" class="repo-name">sindresorhus/awesome-electron</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 27,073</td>
+                        <td>🍴 2,045</td>
+                        <td style="max-width: 400px;">Useful resources for creating apps with Electron</td>
+                    </tr>
+
+                    <tr>
+                        <td>#14</td>
+                        <td><a href="https://github.com/matteocrippa/awesome-swift" target="_blank" class="repo-name">matteocrippa/awesome-swift</a></td>
+                        <td><span class="language-tag" style="background: #cd39eb; color: white;">Ruby</span></td>
+                        <td class="stars">⭐ 25,968</td>
+                        <td>🍴 3,122</td>
+                        <td style="max-width: 400px;">A collaborative list of awesome Swift libraries and resources. Feel free to contribute!</td>
+                    </tr>
+
+                    <tr>
+                        <td>#15</td>
+                        <td><a href="https://github.com/quozd/awesome-dotnet" target="_blank" class="repo-name">quozd/awesome-dotnet</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 21,230</td>
+                        <td>🍴 2,856</td>
+                        <td style="max-width: 400px;">A collection of awesome .NET libraries, tools, frameworks and software</td>
+                    </tr>
+
+                    <tr>
+                        <td>#16</td>
+                        <td><a href="https://github.com/thangchung/awesome-dotnet-core" target="_blank" class="repo-name">thangchung/awesome-dotnet-core</a></td>
+                        <td><span class="language-tag" style="background: #18bb85; color: white;">C#</span></td>
+                        <td class="stars">⭐ 21,156</td>
+                        <td>🍴 2,953</td>
+                        <td style="max-width: 400px;">:honeybee: A collection of awesome .NET core libraries, tools, frameworks and software</td>
+                    </tr>
+
+                    <tr>
+                        <td>#17</td>
+                        <td><a href="https://github.com/thibmaek/awesome-raspberry-pi" target="_blank" class="repo-name">thibmaek/awesome-raspberry-pi</a></td>
+                        <td><span class="language-tag" style="background: #62c76c; color: white;">Shell</span></td>
+                        <td class="stars">⭐ 16,171</td>
+                        <td>🍴 1,100</td>
+                        <td style="max-width: 400px;">📝 A curated list of awesome Raspberry Pi tools, projects, images and resources</td>
+                    </tr>
+
+                    <tr>
+                        <td>#18</td>
+                        <td><a href="https://github.com/markets/awesome-ruby" target="_blank" class="repo-name">markets/awesome-ruby</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 14,064</td>
+                        <td>🍴 1,756</td>
+                        <td style="max-width: 400px;">💎 A collection of awesome Ruby libraries, tools, frameworks and software</td>
+                    </tr>
+
+                    <tr>
+                        <td>#19</td>
+                        <td><a href="https://github.com/donnemartin/awesome-aws" target="_blank" class="repo-name">donnemartin/awesome-aws</a></td>
+                        <td><span class="language-tag" style="background: #cabc1d; color: white;">Python</span></td>
+                        <td class="stars">⭐ 13,969</td>
+                        <td>🍴 1,883</td>
+                        <td style="max-width: 400px;">A curated list of awesome Amazon Web Services (AWS) libraries, open source repos, guides, blogs, and other resources.  Featuring the Fiery Meter of AWSome.</td>
+                    </tr>
+
+                    <tr>
+                        <td>#20</td>
+                        <td><a href="https://github.com/bolshchikov/js-must-watch" target="_blank" class="repo-name">bolshchikov/js-must-watch</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 13,576</td>
+                        <td>🍴 883</td>
+                        <td style="max-width: 400px;">Must-watch videos about javascript</td>
+                    </tr>
+
+                    <tr>
+                        <td>#21</td>
+                        <td><a href="https://github.com/h4cc/awesome-elixir" target="_blank" class="repo-name">h4cc/awesome-elixir</a></td>
+                        <td><span class="language-tag" style="background: #8caf98; color: white;">Elixir</span></td>
+                        <td class="stars">⭐ 13,113</td>
+                        <td>🍴 1,182</td>
+                        <td style="max-width: 400px;">A curated list of amazingly awesome Elixir and Erlang libraries, resources and shiny things. Updates:</td>
+                    </tr>
+
+                    <tr>
+                        <td>#22</td>
+                        <td><a href="https://github.com/loverajoel/jstips" target="_blank" class="repo-name">loverajoel/jstips</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 12,464</td>
+                        <td>🍴 789</td>
+                        <td style="max-width: 400px;">This is about useful JS tips!</td>
+                    </tr>
+
+                    <tr>
+                        <td>#23</td>
+                        <td><a href="https://github.com/JStumpp/awesome-android" target="_blank" class="repo-name">JStumpp/awesome-android</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 12,048</td>
+                        <td>🍴 1,755</td>
+                        <td style="max-width: 400px;">A curated list of awesome Android packages and resources.</td>
+                    </tr>
+
+                    <tr>
+                        <td>#24</td>
+                        <td><a href="https://github.com/lauris/awesome-scala" target="_blank" class="repo-name">lauris/awesome-scala</a></td>
+                        <td><span class="language-tag" style="background: #cabc1d; color: white;">Python</span></td>
+                        <td class="stars">⭐ 9,221</td>
+                        <td>🍴 1,267</td>
+                        <td style="max-width: 400px;">A community driven list of useful Scala libraries, frameworks and software.</td>
+                    </tr>
+
+                    <tr>
+                        <td>#25</td>
+                        <td><a href="https://github.com/frenck/awesome-home-assistant" target="_blank" class="repo-name">frenck/awesome-home-assistant</a></td>
+                        <td><span class="language-tag" style="background: #62c76c; color: white;">Shell</span></td>
+                        <td class="stars">⭐ 7,500</td>
+                        <td>🍴 399</td>
+                        <td style="max-width: 400px;">A curated list of amazingly awesome Home Assistant resources.</td>
+                    </tr>
+
+                    <tr>
+                        <td>#26</td>
+                        <td><a href="https://github.com/stoeffel/awesome-fp-js" target="_blank" class="repo-name">stoeffel/awesome-fp-js</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 6,037</td>
+                        <td>🍴 393</td>
+                        <td style="max-width: 400px;">:sunglasses: A curated list of awesome functional programming stuff in js</td>
+                    </tr>
+
+                    <tr>
+                        <td>#27</td>
+                        <td><a href="https://github.com/hsavit1/Awesome-Swift-Education" target="_blank" class="repo-name">hsavit1/Awesome-Swift-Education</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 5,772</td>
+                        <td>🍴 471</td>
+                        <td style="max-width: 400px;">:fire: Learn some Swift</td>
+                    </tr>
+
+                    <tr>
+                        <td>#28</td>
+                        <td><a href="https://github.com/timofurrer/awesome-asyncio" target="_blank" class="repo-name">timofurrer/awesome-asyncio</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 5,035</td>
+                        <td>🍴 346</td>
+                        <td style="max-width: 400px;">A curated list of awesome Python asyncio frameworks, libraries, software and resources</td>
+                    </tr>
+
+                    <tr>
+                        <td>#29</td>
+                        <td><a href="https://github.com/nix-community/awesome-nix" target="_blank" class="repo-name">nix-community/awesome-nix</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 5,027</td>
+                        <td>🍴 196</td>
+                        <td style="max-width: 400px;">😎 A curated list of the best resources in the Nix community [maintainer=@cyntheticfox]</td>
+                    </tr>
+
+                    <tr>
+                        <td>#30</td>
+                        <td><a href="https://github.com/qmonnet/awesome-ebpf" target="_blank" class="repo-name">qmonnet/awesome-ebpf</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 4,976</td>
+                        <td>🍴 416</td>
+                        <td style="max-width: 400px;">A curated list of awesome projects related to eBPF.</td>
+                    </tr>
+
+                    <tr>
+                        <td>#31</td>
+                        <td><a href="https://github.com/inputsh/awesome-linux" target="_blank" class="repo-name">inputsh/awesome-linux</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 4,965</td>
+                        <td>🍴 410</td>
+                        <td style="max-width: 400px;">:penguin: A list of awesome projects and resources that make Linux even more awesome. :penguin:</td>
+                    </tr>
+
+                    <tr>
+                        <td>#32</td>
+                        <td><a href="https://github.com/dustinspecker/awesome-eslint" target="_blank" class="repo-name">dustinspecker/awesome-eslint</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 4,724</td>
+                        <td>🍴 247</td>
+                        <td style="max-width: 400px;">A list of awesome ESLint plugins, configs, etc.</td>
+                    </tr>
+
+                    <tr>
+                        <td>#33</td>
+                        <td><a href="https://github.com/sindresorhus/awesome-npm" target="_blank" class="repo-name">sindresorhus/awesome-npm</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 4,686</td>
+                        <td>🍴 275</td>
+                        <td style="max-width: 400px;">Awesome npm resources and tips</td>
+                    </tr>
+
+                    <tr>
+                        <td>#34</td>
+                        <td><a href="https://github.com/parro-it/awesome-micro-npm-packages" target="_blank" class="repo-name">parro-it/awesome-micro-npm-packages</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 4,620</td>
+                        <td>🍴 456</td>
+                        <td style="max-width: 400px;">A curated list of small, focused npm packages.</td>
+                    </tr>
+
+                    <tr>
+                        <td>#35</td>
+                        <td><a href="https://github.com/ipfs/awesome-ipfs" target="_blank" class="repo-name">ipfs/awesome-ipfs</a></td>
+                        <td><span class="language-tag" style="background: #bd5e04; color: white;">JavaScript</span></td>
+                        <td class="stars">⭐ 4,569</td>
+                        <td>🍴 550</td>
+                        <td style="max-width: 400px;">Community list of awesome projects, apps, tools, pinning services and more related to IPFS.</td>
+                    </tr>
+
+                    <tr>
+                        <td>#36</td>
+                        <td><a href="https://github.com/denolib/awesome-deno" target="_blank" class="repo-name">denolib/awesome-deno</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 4,402</td>
+                        <td>🍴 240</td>
+                        <td style="max-width: 400px;">Curated list of awesome things related to Deno</td>
+                    </tr>
+
+                    <tr>
+                        <td>#37</td>
+                        <td><a href="https://github.com/uraimo/Awesome-Swift-Playgrounds" target="_blank" class="repo-name">uraimo/Awesome-Swift-Playgrounds</a></td>
+                        <td><span class="language-tag" style="background: #34468c; color: white;">Swift</span></td>
+                        <td class="stars">⭐ 4,368</td>
+                        <td>🍴 342</td>
+                        <td style="max-width: 400px;">A List of Awesome Swift Playgrounds</td>
+                    </tr>
+
+                    <tr>
+                        <td>#38</td>
+                        <td><a href="https://github.com/agarrharr/awesome-macos-screensavers" target="_blank" class="repo-name">agarrharr/awesome-macos-screensavers</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 4,333</td>
+                        <td>🍴 167</td>
+                        <td style="max-width: 400px;">🍎 🖥 🎆 A curated list of screensavers for Mac OS X</td>
+                    </tr>
+
+                    <tr>
+                        <td>#39</td>
+                        <td><a href="https://github.com/sporto/awesome-elm" target="_blank" class="repo-name">sporto/awesome-elm</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 3,680</td>
+                        <td>🍴 222</td>
+                        <td style="max-width: 400px;">A curated list of useful Elm tutorials, libraries and software. Inspired by awesome list. Feel free to contribute. :rocket:</td>
+                    </tr>
+
+                    <tr>
+                        <td>#40</td>
+                        <td><a href="https://github.com/krzjoa/awesome-python-data-science" target="_blank" class="repo-name">krzjoa/awesome-python-data-science</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 3,388</td>
+                        <td>🍴 433</td>
+                        <td style="max-width: 400px;">Probably the best curated list of data science software in Python.</td>
+                    </tr>
+
+                    <tr>
+                        <td>#41</td>
+                        <td><a href="https://github.com/krispo/awesome-haskell" target="_blank" class="repo-name">krispo/awesome-haskell</a></td>
+                        <td><span class="language-tag" style="background: #b0d702; color: white;">Haskell</span></td>
+                        <td class="stars">⭐ 3,322</td>
+                        <td>🍴 177</td>
+                        <td style="max-width: 400px;">A collection of awesome Haskell links, frameworks, libraries and software. Inspired by awesome projects line.</td>
+                    </tr>
+
+                    <tr>
+                        <td>#42</td>
+                        <td><a href="https://github.com/razum2um/awesome-clojure" target="_blank" class="repo-name">razum2um/awesome-clojure</a></td>
+                        <td><span class="language-tag" style="background: #8c8f1b; color: white;">Clojure</span></td>
+                        <td class="stars">⭐ 2,803</td>
+                        <td>🍴 214</td>
+                        <td style="max-width: 400px;">A curated list of awesome Clojure libraries and resources. Inspired by awesome-... stuff</td>
+                    </tr>
+
+                    <tr>
+                        <td>#43</td>
+                        <td><a href="https://github.com/agucova/awesome-esp" target="_blank" class="repo-name">agucova/awesome-esp</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 2,275</td>
+                        <td>🍴 131</td>
+                        <td style="max-width: 400px;">📶 A curated list of awesome ESP8266/32 projects and code</td>
+                    </tr>
+
+                    <tr>
+                        <td>#44</td>
+                        <td><a href="https://github.com/deephacks/awesome-jvm" target="_blank" class="repo-name">deephacks/awesome-jvm</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 2,158</td>
+                        <td>🍴 228</td>
+                        <td style="max-width: 400px;">A curated list of awesome loosely performance related JVM stuff. Inspired by awesome-python.</td>
+                    </tr>
+
+                    <tr>
+                        <td>#45</td>
+                        <td><a href="https://github.com/0PandaDEV/awesome-windows" target="_blank" class="repo-name">0PandaDEV/awesome-windows</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 2,113</td>
+                        <td>🍴 108</td>
+                        <td style="max-width: 400px;">An awesome & curated list of tools and apps for Windows 10/11.</td>
+                    </tr>
+
+                    <tr>
+                        <td>#46</td>
+                        <td><a href="https://github.com/fkromer/awesome-ros2" target="_blank" class="repo-name">fkromer/awesome-ros2</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 2,062</td>
+                        <td>🍴 326</td>
+                        <td style="max-width: 400px;">The Robot Operating System Version 2.0 is awesome!</td>
+                    </tr>
+
+                    <tr>
+                        <td>#47</td>
+                        <td><a href="https://github.com/Friz-zy/awesome-linux-containers" target="_blank" class="repo-name">Friz-zy/awesome-linux-containers</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 2,041</td>
+                        <td>🍴 177</td>
+                        <td style="max-width: 400px;">A curated list of awesome Linux Containers frameworks, libraries and software</td>
+                    </tr>
+
+                    <tr>
+                        <td>#48</td>
+                        <td><a href="https://github.com/typeddjango/awesome-python-typing" target="_blank" class="repo-name">typeddjango/awesome-python-typing</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 1,953</td>
+                        <td>🍴 76</td>
+                        <td style="max-width: 400px;">Collection of awesome Python types, stubs, plugins, and tools to work with them.</td>
+                    </tr>
+
+                    <tr>
+                        <td>#49</td>
+                        <td><a href="https://github.com/XamSome/awesome-xamarin" target="_blank" class="repo-name">XamSome/awesome-xamarin</a></td>
+                        <td><span class="language-tag" style="background: #b31172; color: white;">N/A</span></td>
+                        <td class="stars">⭐ 1,868</td>
+                        <td>🍴 284</td>
+                        <td style="max-width: 400px;">A collection of interesting libraries/tools for Xamarin mobile projects </td>
+                    </tr>
+
+                    <tr>
+                        <td>#50</td>
+                        <td><a href="https://github.com/mcauser/awesome-micropython" target="_blank" class="repo-name">mcauser/awesome-micropython</a></td>
+                        <td><span class="language-tag" style="background: #abb042; color: white;">HTML</span></td>
+                        <td class="stars">⭐ 1,759</td>
+                        <td>🍴 214</td>
+                        <td style="max-width: 400px;">A curated list of awesome MicroPython libraries, frameworks, software and resources.</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            <p>🦀 PaGURUS - ShellFinder Module</p>
+            <p style="margin-top: 10px; opacity: 0.8;">
+                Generated on 2026-04-07 10:47:41
+            </p>
+            <p style="margin-top: 5px; opacity: 0.6; font-size: 0.9em;">
+                Template is Quality, Execution is Truth
+            </p>
+        </div>
+    </div>
+</body>
+</html>
