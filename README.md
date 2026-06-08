@@ -1,196 +1,330 @@
-# 🦀 PaGURUS
+# Pagurus: 面向机器人视觉研究的认知底座
 
-> **Execution-Guided Repository-Level Code Agent**  
-> **基于执行反馈与模板检索的仓库级代码智能体**
->
-> *Clone, Build, and Tweak—Standing on the Shoulders of Open Source*  
-> *克隆、构建、改造——站在开源的肩膀上*
+## 1. 当前判断
 
----
+AI 参与研究以后，执行成本迅速下降，但也带来一个明显问题：大家都会很快抵达公开知识里的“平均方案”。如果研究流程仍然从“我有一个 idea，然后让 AI 帮我实现”开始，就很容易重复造轮子。
 
-[![English](https://img.shields.io/badge/lang-English-blue.svg)](README.md) 
-[![中文](https://img.shields.io/badge/lang-中文-red.svg)](README.md)
-![Status](https://img.shields.io/badge/status-concept-orange.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
+Pagurus 的项目方向需要从“通用 AI agent”收紧为：
 
----
+> 构建面向机器人算法研究的个人/团队知识图谱，并在这个知识底座上发展机器人视觉专家。
 
-## 💡 What is PaGURUS? / 什么是 PaGURUS？
+第一阶段不是先做一个看起来聪明的 AI 专家，而是先跑通知识图谱路线，让 AI 能基于已有论文、baseline、失败案例、实验记录和研究假设工作。
 
-**[EN]** **PaGURUS** is a repository-level code agent that generates code by **finding, running, and modifying** existing open-source templates, rather than generating from scratch.
+## 2. 项目目标
 
-**[中文]** **PaGURUS** 是一个仓库级代码智能体，通过 **"找壳→钻壳→改壳"** 的方式，在现有开源项目基础上进行增量开发，而非从零开始生成。
+Pagurus 要解决的核心问题是：
 
----
+> 如何让研究者和 AI 一起站在前人工作的肩膀上，而不是反复回到已经走烂的直觉路径。
 
-## 🦭 Core Concept / 核心概念
+因此，项目不以“生成新算法”为第一目标，而以“建立研究判断力”为第一目标。
 
-**[EN]** Like a hermit crab that finds, occupies, and modifies shells, PaGURUS follows the **"Find Shell → Drill Shell → Modify Shell"** philosophy:
+具体来说，系统需要帮助我们回答：
 
-**[中文]** 就像寄居蟹寻找、钻入、改造壳一样，PaGURUS 遵循 **"找壳→钻壳→改壳"** 的理念：
+- 这个 idea 是否已经有人做过？
+- 它最接近哪些 prior art？
+- 它站在哪些强 baseline 之上？
+- 它解决的是哪个真实 failure mode？
+- 最小证伪实验是什么？
+- 如果实验成功，能形成什么清晰 claim？
+- 如果实验失败，应该如何更新假设？
 
-| **[EN] Step** | **[中文] 步骤** |
-|--------------|----------------|
-| 🔍 **Find Shell** — Search and retrieve the best-matching open-source template | 🔍 **找壳** — 检索最匹配的开源模板 |
-| 🔨 **Drill Shell** — Clone and debug the environment until it runs | 🔨 **钻壳** — 克隆并调试环境直到能运行 |
-| ✏️ **Modify Shell** — Understand the codebase and make targeted modifications | ✏️ **改壳** — 理解代码库并进行精准修改 |
+## 3. 两条路线
 
----
+### 3.1 第一条路：个人/团队知识图谱
 
-## 🎯 Why PaGURUS? / 为什么选择 PaGURUS？
+这是当前优先路线。
 
-**[EN]** Unlike traditional LLM agents that generate code from zero-shot, PaGURUS ensures quality through template-based development and execution verification.
+知识图谱不是简单的笔记库，而是研究认知底座。它需要组织以下对象：
 
-**[中文]** 与传统的零样本 LLM 智能体不同，PaGURUS 通过基于模板的开发和执行验证确保代码质量。
+- `Paper`：论文、技术报告、开源系统、benchmark。
+- `Problem`：视觉定位、VIO、SLAM、重定位、动态场景建图、视觉世界模型。
+- `Method`：特征法、直接法、优化法、滤波法、深度 SLAM、语义辅助定位等。
+- `Assumption`：静态环境、准确标定、时间同步、纹理充分、地图不过期。
+- `FailureMode`：弱纹理、动态遮挡、重复结构、运动模糊、地图过期、尺度漂移、跟踪丢失。
+- `Baseline`：必须比较的传统方法、学习方法和开源系统。
+- `Dataset`：公开数据集、自采数据、退化场景集合。
+- `Metric`：ATE、RPE、failure rate、relocalization time、latency、闭环成功率。
+- `Experiment`：baseline 实验、消融实验、压力测试、真实机器人闭环测试。
+- `Claim`：一个方法真正证明了什么，以及在什么条件下成立。
 
-| **[EN] Traditional LLM Agents** | **[中文] 传统 LLM 智能体** | **PaGURUS** |
-|:---|:---|:---|
-| ❌ Zero-shot generation, unpredictable quality | ❌ 零样本生成，质量不可控 | ✅ Template-based, quality guaranteed / 基于模板，质量有保障 |
-| ❌ No execution verification | ❌ 无执行验证 | ✅ Sandbox execution with validation / 沙盒执行验证 |
-| ❌ Limited repository understanding | ❌ 仓库理解能力有限 | ✅ Global dependency graph (Repo Map) / 全局依赖图 |
-| ❌ Manual environment setup | ❌ 手动配置环境 | ✅ Auto-debug until success / 自动调试至成功 |
+第一阶段的核心产出不是炫酷界面，而是让 AI 可以带着上下文回答研究问题。
 
----
+### 3.2 第二条路：AI 专家
 
-## 🔄 Workflow / 工作流程
+AI 专家应该建立在知识图谱之上。
 
-```
-User Request / 用户需求
-      ↓
-🔍 Find / 找壳: Retrieve matching template from GitHub
-      ↓
-🔨 Drill / 钻壳: Clone + Auto-debug until it runs
-      ↓
-✏️ Modify / 改壳: Parse AST + Generate targeted patches
-      ↓
-✅ Verify / 验证: Re-compile + Self-heal on errors
-      ↓
-📦 Deliver / 交付: Complete, working project
-```
+如果没有知识图谱，AI 专家很容易变成通用问答助手；如果有知识图谱，它可以逐渐形成更稳定的角色：
 
----
+- 文献侦察员：查找 prior art、相似方法和技术谱系。
+- 反方审稿人：攻击 claim，指出 baseline 缺失和实验漏洞。
+- 实验设计师：提出最小证伪实验、消融设计和压力测试。
+- 失败诊断员：根据日志和案例定位失败机制。
+- 机器人视觉专家：围绕视觉定位、建图、世界模型和闭环任务给出研究判断。
 
-## 🏗️ Architecture / 系统架构
+## 4. 机器人视觉专家的定位
 
-**[EN]** PaGURUS consists of four core modules:
+机器人视觉专家不是“看图问答助手”，也不是泛泛的计算机视觉助手。
 
-**[中文]** PaGURUS 由四个核心模块组成：
+它的定义应该是：
 
-| **[EN] Module** | **[中文] 模块** | **Description / 描述** |
-|:---|:---|:---|
-| **Retriever** | **检索器** | Intent parsing and template matching / 意图解析与模板匹配 |
-| **Sandbox** | **沙盒** | Isolated environment with auto-debug / 隔离环境与自动调试 |
-| **Modifier** | **改造器** | AST-based code understanding and patching / 基于 AST 的代码理解与补丁 |
-| **Validator** | **验证器** | Execution verification and self-healing / 执行验证与自修复 |
+> 面向机器人算法研究的视觉专家，帮助研究者理解视觉信息如何服务于定位、建图、世界模型、导航和闭环决策。
 
----
+它关注的不是单帧识别结果，而是：
 
-## 🛣️ Roadmap / 研发路线
+- 视觉如何提供可靠状态估计？
+- 视觉地图如何支撑定位和规划？
+- 视觉表示是否对下游控制有用？
+- 当前视觉系统什么时候不可靠？
+- 一个视觉算法是否真的提升机器人闭环能力？
 
-| **[EN] Phase** | **[中文] 阶段** | **Timeline / 时间** | **Goals / 目标** |
-|:---|:---|:---|:---|
-| **PoC** | **概念验证** | 1 week / 1周 | Fixed template + manual debugging / 固定模板 + 手动调试 |
-| **MVP** | **最小可行产品** | 1 month / 1月 | Auto-retrieval + sandbox + closed loop / 自动检索 + 沙盒 + 闭环 |
-| **Research** | **研究深化** | 3 months / 3月 | Auto environment repair + repo-level understanding / 自动环境修复 + 仓库级理解 |
+## 5. 理论方向
 
----
+### 5.1 几何视觉层
 
-## 🚀 Quick Start / 快速开始
+几何视觉是机器人视觉的地基，回答“机器人在哪里、怎么动、环境结构是什么”。
 
-**[EN]**
+核心主题：
 
-```bash
-# Example: Create a React blog with FastAPI backend
+- 相机模型与坐标系。
+- 多视图几何。
+- 特征匹配与光流。
+- 深度估计与三维重建。
+- Visual Odometry。
+- Visual-Inertial Odometry。
+- Visual SLAM。
+- 重定位与回环检测。
+- 相机、IMU、LiDAR 的标定与融合。
 
-# ① Find: PaGURUS searches for "react-fastapi-starter"
-# ② Drill: Auto-install dependencies and start services
-# ③ Modify: Add blog components and authentication APIs
-# ✅ Deliver: Production-ready project
-```
+这一层的专家能力包括：
 
-**[中文]**
+- 判断一个定位/建图 idea 属于哪个方法族。
+- 指出它依赖哪些几何假设。
+- 推荐必须比较的 baseline。
+- 识别可能的退化场景。
 
-```bash
-# 示例：创建一个带 FastAPI 后端的 React 博客
+### 5.2 语义与场景理解层
 
-# ① 找壳：PaGURUS 搜索 "react-fastapi-starter"
-# ② 钻壳：自动安装依赖并启动服务
-# ③ 改壳：添加博客组件和认证 API
-# ✅ 交付：生产就绪的项目
-```
+语义层回答“世界里哪些东西有意义、哪些东西稳定、哪些东西会动”。
 
----
+核心主题：
 
-## 🔬 Key Innovations / 核心创新
+- 语义分割。
+- 动态物体识别。
+- 可通行区域理解。
+- 物体级地图。
+- 语义地图。
+- 开放词汇感知。
+- 场景图与任务相关物体。
 
-| **[EN]** | **[中文]** |
-|:---|:---|
-| **Execution-Guided** — Real sandbox validation, not just static generation | **执行驱动** — 真实沙盒验证，而非静态生成 |
-| **Repository-Level** — Global dependency understanding via Repo Map | **仓库级理解** — 通过 Repo Map 理解全局依赖 |
-| **Template-First** — Leverage open-source ecosystem, not reinvent the wheel | **模板优先** — 利用开源生态，不重复造轮子 |
-| **Self-Healing** — Dedicated debug agent for environment and code errors | **自修复** — 专门的调试代理处理环境和代码错误 |
+这一层的关键问题是：语义不是为了让系统“看懂图像”，而是为了提升定位、建图、导航和交互的可靠性。
 
----
+例如：
 
-## 📚 Tech Stack / 技术栈
+- 动态物体是否应该从定位匹配中剔除？
+- 哪些语义区域更适合作为长期地图锚点？
+- 地图过期时，语义是否能帮助判断局部地图可信度？
+- 开放词汇感知是否真的改善任务成功率？
 
-| **[EN] Component** | **[中文] 组件** | **Technology / 技术选型** |
-|:---|:---|:---|
-| Sandbox | 沙盒环境 | Docker / E2B |
-| Code Parsing | 代码解析 | Tree-sitter |
-| Vector Search | 向量检索 | Qdrant |
-| LLM | 大语言模型 | Claude 3.5 Sonnet / DeepSeek Coder |
-| Diff Generation | 差异生成 | Aider-style patches |
+### 5.3 时序与世界模型层
 
----
+机器人视觉不是单帧理解，而是连续时空理解。
 
-## 🎓 Why "PaGURUS"? / 为什么叫 "PaGURUS"？
+核心主题：
 
-**[EN]**
+- 时序视觉表示。
+- 未来观测预测。
+- Occupancy flow。
+- 动态场景建模。
+- Action-conditioned prediction。
+- Latent world model。
+- 视觉表示对 planning 的可用性。
 
-> A hermit crab spends its life finding, drilling into, and modifying shells.
->
-> **PaGURUS does the same with code**: find templates → make them work → improve them.
->
-> Not starting from scratch, but building on the shoulders of open source.
+这一层回答：
 
-**[中文]**
+- 世界接下来会怎样？
+- 我的动作会改变什么？
+- 预测结果是否能被 planner 使用？
+- 预测 loss 下降是否真的带来闭环收益？
 
-> 寄居蟹的一生都在寻找、钻入、改造合适的壳。
->
-> **PaGURUS 也一样**：找模板 → 跑通环境 → 增量改造
->
-> 不是从零开始，而是站在开源的肩膀上。
+世界模型方向必须避免只追求图像预测质量。对机器人来说，更重要的是状态、可通行性、碰撞风险、不确定性和行动后果。
 
----
+### 5.4 不确定性与失败诊断层
 
-## 📖 Documentation / 文档
+这是机器人视觉专家最应该形成区分度的部分。
 
-- [Concept Document (中文)](docs/CONCEPT.md) — Detailed concept explanation
-- [Core Concept (中文)](docs/CONCEPT_CORE.md) — Quick overview
-- [Architecture (中文)](docs/CONCEPT.md#系统架构-core-modules) — System architecture
+核心主题：
 
----
+- Tracking failure。
+- Localization uncertainty。
+- Out-of-distribution detection。
+- Motion blur。
+- 弱纹理与重复结构。
+- 光照突变。
+- 动态遮挡。
+- 标定误差。
+- 时间同步误差。
+- 传感器退化。
 
-## 🤝 Contributing / 贡献
+这一层回答：
 
-**[EN]** This project is currently in the concept phase. Contributions and suggestions are welcome!
+- 当前视觉估计可靠吗？
+- 如果不可靠，原因是什么？
+- 系统应该降级、重定位、切换传感器，还是请求重新建图？
+- 哪些 failure mode 是当前方法真正解决的？
 
-**[中文]** 本项目目前处于概念阶段。欢迎贡献和建议！
+## 6. 第一版专家：视觉定位研究专家
 
----
+为了避免范围过大，第一版建议聚焦：
 
-## 📄 License / 许可证
+> 视觉定位与建图专家。
 
-MIT License
+它先专注三类问题：
 
----
+1. 这个定位/建图 idea 是否已经有人做过？
+2. 它应该和哪些强 baseline 比？
+3. 最小实验怎样证明它真的解决了一个 failure mode？
 
-**[EN]** Template is Quality, Execution is Truth 🦀
+第一版不追求覆盖全部机器人视觉，而是先在视觉定位、VIO、SLAM、重定位和动态场景定位上形成高质量判断。
 
-**[中文]** 模板即质量，执行即真理 🦀
+## 7. 研究工作流
 
----
+每个新 idea 进入系统时，先不直接实现，而是进入研究审查流程。
 
-*Status: Concept Phase / 概念阶段*  
-*Last Updated: April 2026*
+### 7.1 Idea Card
+
+每个想法先写成一张卡片：
+
+- 问题是什么？
+- 真实场景在哪里？
+- 已有方法为什么失败？
+- 我们的核心假设是什么？
+- 这个假设最像哪些 prior art？
+- 成功后能形成什么 claim？
+- 最小证伪实验是什么？
+
+### 7.2 Prior Art Matrix
+
+对相似工作建立对照表：
+
+- 方法名称。
+- 核心机制。
+- 关键假设。
+- 使用传感器。
+- 地图形式。
+- 评测数据。
+- 指标。
+- 失败场景。
+- 与当前 idea 的关系。
+
+目标不是收集论文，而是判断这个 idea 是否真的有新问题、新机制或新证据。
+
+### 7.3 Baseline Gate
+
+进入实现前，必须回答：
+
+- 最强传统 baseline 是谁？
+- 最强学习型 baseline 是谁？
+- 是否有开源实现？
+- 我们能否复现主要结果？
+- 如果不能复现，原因是什么？
+
+没有 baseline 的创新，大概率不可靠。
+
+### 7.4 Failure Case Library
+
+系统需要长期积累失败案例：
+
+- 原始传感器日志。
+- 失败轨迹。
+- 对应场景描述。
+- 触发条件。
+- 现象。
+- 可能原因。
+- 复现实验。
+- 相关论文和方法。
+
+对机器人研究来说，失败案例库是最重要的差异化资产之一。
+
+### 7.5 Minimum Falsification Experiment
+
+每个方向都要设计最小证伪实验：
+
+- 如果假设是错的，什么实验能最快暴露？
+- 如果方法有效，它应该首先在哪个 failure mode 上有效？
+- 如果只在平均指标上提升，但 failure mode 不改善，是否仍然有研究价值？
+
+## 8. 系统最小原型
+
+第一阶段可以先实现一个很小但可用的系统。
+
+当前知识结构入口见 [knowledge/index.md](knowledge/index.md)。
+
+### 8.1 输入
+
+- 论文笔记。
+- README 和项目文档。
+- 实验日志。
+- 机器人失败案例。
+- baseline 运行记录。
+- idea card。
+
+### 8.2 存储
+
+先不急着做复杂图数据库，可以从结构化 Markdown / YAML / JSON 开始。
+
+建议最小结构：
+
+- `knowledge/papers/`
+- `knowledge/problems/`
+- `knowledge/methods/`
+- `knowledge/failure_modes/`
+- `knowledge/baselines/`
+- `knowledge/experiments/`
+- `knowledge/claims/`
+- `knowledge/idea_cards/`
+
+### 8.3 AI 能力
+
+第一版 AI 只需要完成几个高价值任务：
+
+- 对一个 idea 做 prior art 审查。
+- 推荐 baseline。
+- 生成最小证伪实验。
+- 把论文笔记转成结构化节点。
+- 把失败日志归类到 failure mode。
+- 帮助形成清晰 claim。
+
+## 9. 判断标准
+
+Pagurus 的第一阶段是否成功，不看它是否像一个完整产品，而看它是否让研究流程变得更清醒。
+
+成功标准：
+
+- 新 idea 不再直接进入实现，而是先经过 prior art 和 baseline 审查。
+- AI 回答问题时能引用已有知识节点，而不是自由发挥。
+- 团队逐渐积累自己的 failure case library。
+- 每个实验都能回到一个明确假设。
+- 每个方向最后能形成清晰 claim 或被快速证伪。
+
+## 10. 当前结论
+
+Pagurus 当前应该先跑通第一条路：
+
+> 个人/团队知识图谱 -> 研究审查流程 -> 视觉定位专家原型。
+
+机器人视觉专家不是终点，而是知识图谱路线跑通之后自然生长出来的能力。
+
+第一版最合理的聚焦点是：
+
+> 面向机器人视觉定位与建图研究的 AI 专家。
+
+它的核心价值不是替我们想一个“新算法”，而是帮助我们判断一个算法是否值得做、站在谁的肩膀上、应该如何被证伪，以及它最终能否在真实机器人闭环里成立。
+
+## 11. 参考锚点
+
+这些不是完整文献综述，只是第一阶段建立知识图谱时可以优先纳入的方向锚点：
+
+- [VINS-Mono](https://arxiv.org/abs/1708.03852)：视觉惯性里程计中的经典优化式基线。
+- [ORB-SLAM3](https://arxiv.org/abs/2007.11898)：视觉、视觉惯性、多地图 SLAM 的重要开源系统。
+- [DROID-SLAM](https://arxiv.org/abs/2108.10869)：学习式视觉 SLAM 的代表性路线。
+- [A Comprehensive Survey of Visual SLAM Algorithms](https://www.mdpi.com/1424-8220/22/5/1922)：用于建立方法族、指标、数据集和发展脉络。
